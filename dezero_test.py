@@ -1,5 +1,4 @@
 import unittest
-import numpy as np
 from dezero import *
 
 
@@ -9,6 +8,7 @@ class SquareTest(unittest.TestCase):
         y = square(x)
         expected = np.array(4.0)
         self.assertEqual(y.data, expected)
+
     def test_backward(self):
         x = Variable(np.array(3.0))
         y = square(x)
