@@ -26,6 +26,13 @@ class SquareTest(unittest.TestCase):
         expected = np.array(5)
         self.assertEqual(ys.data, expected)
 
+    def test_add_backward(self):
+        x = Variable(np.array(3.0))
+        y = add(x, x)
+        y.backward()
+        expected = np.array(1)
+        self.assertEqual(x.grad, expected)
+
 
 if __name__ == '__main__':
     unittest.main()
