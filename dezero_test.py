@@ -1,4 +1,7 @@
 import unittest
+
+import numpy as np
+
 from dezero import *
 
 
@@ -15,6 +18,13 @@ class SquareTest(unittest.TestCase):
         y.backward()
         expected = np.array(6.0)
         self.assertEqual(x.grad, expected)
+
+    def test_add(self):
+        x0 = Variable(np.array(2))
+        x1 = Variable(np.array(3))
+        ys = add(x0, x1)
+        expected = np.array(5)
+        self.assertEqual(ys.data, expected)
 
 
 if __name__ == '__main__':
