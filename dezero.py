@@ -21,10 +21,15 @@ class Variable:
         funcs = [self.creator]
         while funcs:
             f = funcs.pop()
-            x, y = f.input, f.output
-            x.grad = f.backward(y.grad)
-            if x.creator is not None:
-                funcs.append(x.creator)
+            gys = [output.grad for output in f.outputs]
+            gxs = f.backward(*gys)
+            if not isinstance(gxs, tuple):
+                gxs = (gxs,)
+
+            for x, gx in zip(f.inputs, gxs):
+                x.grad = gx
+                if x.creator is not None:
+                    funcs.append(x.creator)
 
 
 def as_array(x):
@@ -51,7 +56,7 @@ class Function:
     def forward(self, xs):
         raise NotImplementedError()
 
-    def backward(self, gys):
+    def backward(self, gy):
         raise NotImplementedError()
 
 
@@ -60,9 +65,8 @@ class Exp(Function):
         x = xs
         return np.exp(x)
 
-    def backward(self, gys):
-        gy = gys
-        x = self.input.data
+    def backward(self, gy):
+        x = self.inputs[0].data
         return np.exp(x) * gy
 
 
@@ -71,9 +75,9 @@ class Square(Function):
         x = xs
         return x ** 2
 
-    def backward(self, gys):
-        x = self.input.data
-        return 2 * x * gys
+    def backward(self, gy):
+        x = self.inputs[0].data
+        return 2 * x * gy
 
 
 class Add(Function):
@@ -81,8 +85,8 @@ class Add(Function):
         y = x0 + x1
         return (y,)
 
-    def backward(self, gys):
-        pass
+    def backward(self, gy):
+        return gy, gy
 
 
 def exp(x):
