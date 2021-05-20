@@ -30,7 +30,7 @@ class SquareTest(unittest.TestCase):
         x = Variable(np.array(3.0))
         y = add(x, x)
         y.backward()
-        expected = np.array(1)
+        expected = 2
         self.assertEqual(x.grad, expected)
 
 
