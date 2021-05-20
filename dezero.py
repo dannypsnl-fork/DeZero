@@ -35,6 +35,9 @@ class Variable:
                 if x.creator is not None:
                     funcs.append(x.creator)
 
+    def cleargrad(self):
+        self.grad = None
+
 
 def as_array(x):
     if np.isscalar(x):

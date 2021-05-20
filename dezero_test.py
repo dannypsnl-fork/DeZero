@@ -40,6 +40,18 @@ class SquareTest(unittest.TestCase):
         expected = 3
         self.assertEqual(x.grad, expected)
 
+    def test_cleargrad(self):
+        x = Variable(np.array(3.0))
+        y = add(x, x)
+        y.backward()
+        expected = 2
+        self.assertEqual(x.grad, expected)
+        x.cleargrad()
+        y = add(add(x, x), x)
+        y.backward()
+        expected = 3
+        self.assertEqual(x.grad, expected)
+
 
 if __name__ == '__main__':
     unittest.main()
