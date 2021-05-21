@@ -52,6 +52,14 @@ class SquareTest(unittest.TestCase):
         expected = 3
         self.assertEqual(x.grad, expected)
 
+    def test_graph(self):
+        x = Variable(np.array(2.0))
+        a = square(x)
+        y = add(square(a), square(a))
+        y.backward()
+        expected = 64
+        self.assertEqual(x.grad, expected)
+
 
 if __name__ == '__main__':
     unittest.main()
