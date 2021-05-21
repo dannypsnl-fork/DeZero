@@ -77,6 +77,10 @@ class Exp(Function):
         return np.exp(x) * gy
 
 
+def exp(x):
+    return Exp()(x)
+
+
 class Square(Function):
     def forward(self, xs):
         x = xs
@@ -87,6 +91,10 @@ class Square(Function):
         return 2 * x * gy
 
 
+def square(x):
+    return Square()(x)
+
+
 class Add(Function):
     def forward(self, x0, x1):
         y = x0 + x1
@@ -94,14 +102,6 @@ class Add(Function):
 
     def backward(self, gy):
         return gy, gy
-
-
-def exp(x):
-    return Exp()(x)
-
-
-def square(x):
-    return Square()(x)
 
 
 def add(x0, x1):
