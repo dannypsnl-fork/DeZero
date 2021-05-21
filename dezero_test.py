@@ -60,6 +60,15 @@ class SquareTest(unittest.TestCase):
         expected = 64
         self.assertEqual(x.grad, expected)
 
+    def test_mul(self):
+        a = Variable(np.array(3.0))
+        b = Variable(np.array(2.0))
+        c = Variable(np.array(1.0))
+        y = a * b + c
+        y.backward()
+        self.assertEqual(a.grad, 2)
+        self.assertEqual(b.grad, 3)
+
 
 if __name__ == '__main__':
     unittest.main()
