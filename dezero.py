@@ -18,6 +18,8 @@ class Config:
 
 
 class Variable:
+    __array_priority__ = 200
+
     def __init__(self, data, name=None):
         if data is not None:
             if not isinstance(data, np.ndarray):
@@ -97,6 +99,12 @@ class Variable:
         return self.data.dtype
 
 
+def as_variable(obj):
+    if isinstance(obj, Variable):
+        return obj
+    return Variable(obj)
+
+
 def as_array(x):
     if np.isscalar(x):
         return np.array(x)
@@ -105,6 +113,8 @@ def as_array(x):
 
 class Function:
     def __call__(self, *inputs):
+        inputs = [as_variable(x) for x in inputs]
+
         xs = [x.data for x in inputs]
         ys = self.forward(*xs)
         if not isinstance(ys, tuple):
@@ -165,6 +175,7 @@ class Add(Function):
 
 
 def add(x0, x1):
+    x1 = as_array(x1)
     return Add()(x0, x1)
 
 
@@ -182,4 +193,6 @@ def mul(x0, x1):
 
 
 Variable.__mul__ = mul
+Variable.__rmul__ = mul
 Variable.__add__ = add
+Variable.__radd__ = add
