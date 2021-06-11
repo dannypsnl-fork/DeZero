@@ -69,6 +69,17 @@ class SquareTest(unittest.TestCase):
         self.assertEqual(a.grad, 2)
         self.assertEqual(b.grad, 3)
 
+    def test_sphere(self):
+        def sphere(x, y):
+            z = x ** 2 + y ** 2
+            return z
+        x = Variable(np.array(1.0))
+        y = Variable(np.array(1.0))
+        z = sphere(x, y)
+        z.backward()
+        self.assertEqual(x.grad, 2.0)
+        self.assertEqual(y.grad, 2.0)
+
 
 if __name__ == '__main__':
     unittest.main()
