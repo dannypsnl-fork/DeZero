@@ -22,32 +22,32 @@ class SquareTest(unittest.TestCase):
     def test_add(self):
         x0 = Variable(np.array(2))
         x1 = Variable(np.array(3))
-        ys = add(x0, x1)
+        ys = x0 + x1
         expected = np.array(5)
         self.assertEqual(ys.data, expected)
 
     def test_add_backward(self):
         x = Variable(np.array(3.0))
-        y = add(x, x)
+        y = x + x
         y.backward()
         expected = 2
         self.assertEqual(x.grad, expected)
 
     def test_add_backward2(self):
         x = Variable(np.array(3.0))
-        y = add(add(x, x), x)
+        y = x + x + x
         y.backward()
         expected = 3
         self.assertEqual(x.grad, expected)
 
     def test_cleargrad(self):
         x = Variable(np.array(3.0))
-        y = add(x, x)
+        y = x + x
         y.backward()
         expected = 2
         self.assertEqual(x.grad, expected)
         x.cleargrad()
-        y = add(add(x, x), x)
+        y = x + x + x
         y.backward()
         expected = 3
         self.assertEqual(x.grad, expected)
@@ -55,7 +55,7 @@ class SquareTest(unittest.TestCase):
     def test_graph(self):
         x = Variable(np.array(2.0))
         a = square(x)
-        y = add(square(a), square(a))
+        y = square(a) + square(a)
         y.backward()
         expected = 64
         self.assertEqual(x.grad, expected)
