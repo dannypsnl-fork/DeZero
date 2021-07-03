@@ -131,6 +131,21 @@ def pow(x, c):
     return Pow(c)(x)
 
 
+class Sin(Function):
+    def forward(self, xs):
+        y = np.sin(xs)
+        return y
+
+    def backward(self, gy):
+        x = self.inputs[0].data
+        gx = gy * np.cos(x)
+        return gx
+
+
+def sin(x):
+    return Sin()(x)
+
+
 def setup_functions():
     Variable.__pow__ = pow
     Variable.__truediv__ = div
